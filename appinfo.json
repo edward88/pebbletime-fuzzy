@@ -1,0 +1,19 @@
+{
+  "uuid": "d451be85-9b36-4f32-8df7-f1c88b777ab7",
+  "shortName": "Fuzzy",
+  "longName": "Fuzzy Time",
+  "companyName": "AwesomeInRed",
+  "versionLabel": "1.0",
+  "sdkVersion": "3",
+  "targetPlatforms": ["basalt"],
+  "enableMultiJS": true,
+  "watchapp": {
+    "watchface": true
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
