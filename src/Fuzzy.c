@@ -63,22 +63,7 @@ int random_max_limit(int max) {
 
   if(max < RAND_MAX)
   {
-    unsigned int
-      num_bins = (unsigned int) max,
-      num_rand = (unsigned int) RAND_MAX + 1,
-      bin_size = num_rand / num_bins,
-      defect   = num_rand % num_bins;
-
-    int x;
-    do {
-     x = rand();
-    }
-    // This is carefully written not to overflow
-    while (num_rand - defect <= (unsigned int)x);
-
-    // Truncated division is intentional
-    return x/bin_size;
-    //return rand() % (max);
+    return rand() % (max);
   }
   return 0;
 }
