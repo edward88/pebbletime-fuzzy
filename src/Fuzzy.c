@@ -33,30 +33,30 @@ static char *hour[] = {"NOON;TWELVE;12",
                       "ELEVEN;ELEVEN;11",
                       "MIDNIGHT;TWELVE;12"};
                       
-static char *pre_fuzzy[] = {"it's\n;exactly\n;it's\n",  //0
-                            "past\n;;it's\n",
-                            "ten past\n;;it's\n",
-                            "quarter past\n;;it's\n", //15
-                            "quarter past\n;;it's\n",
-                            "almost half\n;;it's\n",
-                            "half\n;;it's\n", //30
-                            "past half\n;;it's\n",
-                            "quarter to\n;;it's\n",
-                            "quarter to\n;;it's\n", //45
-                            "ten to\n;;it's\n",
-                            "almost\n;;it's\n"};
+static char *pre_fuzzy[] = {"it's\n;exactly\n;about\n",  //0
+                            "past\n;;around\n",
+                            "ten past\n;;just past\n",
+                            "quarter past\n;;about\n", //15
+                            "quarter past\n;;around\n",
+                            "almost half\n;;just past\n",
+                            "half\n;;about\n", //30
+                            "past half\n;;around\n",
+                            "quarter to\n;;just past\n",
+                            "quarter to\n;;about\n", //45
+                            "ten to\n;;around\n",
+                            "almost\n;;just past\n"};
                       
-static char *post_fuzzy[] = {"!!!;\no'clock;:00", //0
-                             ";\nfive;:05",
+static char *post_fuzzy[] = {"!!!;\no'clock;:00\nor so", //0
+                             ";\nfive;:05\nish",
                              ";\nten;:10",
-                             ";\nfifteen;:15", //15
-                             "\nish;\ntwenty;:20",
+                             ";\nfifteen;:15\nor so", //15
+                             "\nish;\ntwenty;:20\nish",
                              ";\ntwenty five;:25",
-                             ";\nthirty;:30", //30
-                             ";\nthirty five;:35",
+                             ";\nthirty;:30\nor so", //30
+                             ";\nthirty five;:35\nish",
                              "\nor so;\nforty;:40",
-                             ";\nforty five;:45", //45
-                             ";\nfifty;:50",
+                             ";\nforty five;:45\nor so", //45
+                             ";\nfifty;:50\nish",
                              ";\nfifty five;:55"};
 
 int random_max_limit(int max) {
