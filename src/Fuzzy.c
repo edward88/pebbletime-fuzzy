@@ -19,7 +19,7 @@ static GFont s_fuzzy_time_font;
 static int s_battery_level;
 static Layer *s_battery_layer;
 
-static char *hour[] = {"NOON;TWELVE;12",
+static char *hour[] = {"MNIGHT;TWELVE;12",
                       "ONE;ONE;1",
                       "TWO;TWO;2",
                       "THREE;THREE;3",
@@ -31,54 +31,39 @@ static char *hour[] = {"NOON;TWELVE;12",
                       "NINE;NINE;9",
                       "TEN;TEN;10",
                       "ELEVEN;ELEVEN;11",
-                      "MIDNIGHT;TWELVE;12"};
+                      "NOON;TWELVE;12"};
                       
-static char *pre_fuzzy[] = {"it's\n;exactly\n;it's\n",  //0
-                            "past\n;;it's\n",
-                            "ten past\n;;it's\n",
-                            "quarter past\n;;it's\n", //15
-                            "quarter past\n;;it's\n",
-                            "almost half\n;;it's\n",
-                            "half\n;;it's\n", //30
-                            "past half\n;;it's\n",
-                            "quarter to\n;;it's\n",
-                            "quarter to\n;;it's\n", //45
-                            "ten to\n;;it's\n",
-                            "almost\n;;it's\n"};
+static char *pre_fuzzy[] = {"it's\n;exactly\n;about\n",  //0
+                            "past\n;;around\n",
+                            "ten past\n;;just past\n",
+                            "quarter past\n;;about\n", //15
+                            "quarter past\n;;around\n",
+                            "almost half\n;;just past\n",
+                            "half\n;;about\n", //30
+                            "past half\n;;around\n",
+                            "quarter to\n;;just past\n",
+                            "quarter to\n;;about\n", //45
+                            "ten to\n;;around\n",
+                            "almost\n;;just past\n"};
                       
-static char *post_fuzzy[] = {"!!!;\no'clock;:00", //0
-                             ";\nfive;:05",
+static char *post_fuzzy[] = {"!!!;\no'clock;:00\nor so", //0
+                             ";\nfive;:05\nish",
                              ";\nten;:10",
-                             ";\nfifteen;:15", //15
-                             "\nish;\ntwenty;:20",
+                             ";\nfifteen;:15\nor so", //15
+                             "\nish;\ntwenty;:20\nish",
                              ";\ntwenty five;:25",
-                             ";\nthirty;:30", //30
-                             ";\nthirty five;:35",
+                             ";\nthirty;:30\nor so", //30
+                             ";\nthirty five;:35\nish",
                              "\nor so;\nforty;:40",
-                             ";\nforty five;:45", //45
-                             ";\nfifty;:50",
+                             ";\nforty five;:45\nor so", //45
+                             ";\nfifty;:50\nish",
                              ";\nfifty five;:55"};
 
 int random_max_limit(int max) {
 
   if(max < RAND_MAX)
   {
-    unsigned int
-      num_bins = (unsigned int) max,
-      num_rand = (unsigned int) RAND_MAX + 1,
-      bin_size = num_rand / num_bins,
-      defect   = num_rand % num_bins;
-
-    int x;
-    do {
-     x = rand();
-    }
-    // This is carefully written not to overflow
-    while (num_rand - defect <= (unsigned int)x);
-
-    // Truncated division is intentional
-    return x/bin_size;
-    //return rand() % (max);
+    return rand() % (max);
   }
   return 0;
 }
@@ -144,10 +129,6 @@ static void main_window_load(Window *window) {
   // create the textlayer with specific bounds
   s_fuzzy_time_layer = text_layer_create(GRect(TEXT_LAYER_BORDER, TEXT_LAYER_BORDER, (bounds.size.w-TEXT_LAYER_BORDER*2), (bounds.size.h-TEXT_LAYER_BORDER*2)));
 
-  // create gfont
-  //s_fuzzy_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ANONYMOUS_30));
-  //s_fuzzy_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_APPLEBERRY_36));
-
   // improve the layout to be more like a watchface
   text_layer_set_background_color(s_fuzzy_time_layer, GColorClear);
   text_layer_set_text_color(s_fuzzy_time_layer, GColorRed);
@@ -188,7 +169,7 @@ static void update_time(bool force_update) {
   {
     // convert to 12 hour format
     int hour_24_format = tick_time->tm_hour;
-    int hour_12_format = (hour_24_format >= 12 ? hour_24_format - 12 : hour_24_format);
+    int hour_12_format = (hour_24_format > 12 ? hour_24_format - 12 : hour_24_format);
     int minute_5_gap = tick_time->tm_min/5;
 
     int fuzzy_index = random_max_limit(FUZZY_VARIATIONS);
@@ -199,7 +180,7 @@ static void update_time(bool force_update) {
       {
         hour_12_format = 1;
       }
-      else if (hour_24_format == 11)
+      else if (hour_24_format == 23)
       {
         hour_12_format = 0;
       }
