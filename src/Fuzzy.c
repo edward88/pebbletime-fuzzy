@@ -19,7 +19,7 @@ static GFont s_fuzzy_time_font;
 static int s_battery_level;
 static Layer *s_battery_layer;
 
-static char *hour[] = {"NOON;TWELVE;12",
+static char *hour[] = {"MNIGHT;TWELVE;12",
                       "ONE;ONE;1",
                       "TWO;TWO;2",
                       "THREE;THREE;3",
@@ -31,7 +31,7 @@ static char *hour[] = {"NOON;TWELVE;12",
                       "NINE;NINE;9",
                       "TEN;TEN;10",
                       "ELEVEN;ELEVEN;11",
-                      "MIDNIGHT;TWELVE;12"};
+                      "NOON;TWELVE;12"};
                       
 static char *pre_fuzzy[] = {"it's\n;exactly\n;about\n",  //0
                             "past\n;;around\n",
@@ -129,10 +129,6 @@ static void main_window_load(Window *window) {
   // create the textlayer with specific bounds
   s_fuzzy_time_layer = text_layer_create(GRect(TEXT_LAYER_BORDER, TEXT_LAYER_BORDER, (bounds.size.w-TEXT_LAYER_BORDER*2), (bounds.size.h-TEXT_LAYER_BORDER*2)));
 
-  // create gfont
-  //s_fuzzy_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ANONYMOUS_30));
-  //s_fuzzy_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_APPLEBERRY_36));
-
   // improve the layout to be more like a watchface
   text_layer_set_background_color(s_fuzzy_time_layer, GColorClear);
   text_layer_set_text_color(s_fuzzy_time_layer, GColorRed);
@@ -173,7 +169,7 @@ static void update_time(bool force_update) {
   {
     // convert to 12 hour format
     int hour_24_format = tick_time->tm_hour;
-    int hour_12_format = (hour_24_format >= 12 ? hour_24_format - 12 : hour_24_format);
+    int hour_12_format = (hour_24_format > 12 ? hour_24_format - 12 : hour_24_format);
     int minute_5_gap = tick_time->tm_min/5;
 
     int fuzzy_index = random_max_limit(FUZZY_VARIATIONS);
@@ -184,7 +180,7 @@ static void update_time(bool force_update) {
       {
         hour_12_format = 1;
       }
-      else if (hour_24_format == 11)
+      else if (hour_24_format == 23)
       {
         hour_12_format = 0;
       }
