@@ -6,9 +6,9 @@ Displays a random variation of "fuzzy" time
 
 Inital code contains three variants of "fuzzy" time
 
-![alt text](screenshots/_1 "Sample screenshot 1")
-![alt text](screenshots/_2 "Sample screenshot 2")
-![alt text](screenshots/_3 "Sample screenshot 3")
+![screenshot 1](screenshots/_1.png "Sample screenshot 1")
+![screenshot 2](screenshots/_2.png "Sample screenshot 2")
+![screenshot 3](screenshots/_3.png "Sample screenshot 3")
 
 Currently for personal use only..
 
