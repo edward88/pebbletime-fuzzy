@@ -108,8 +108,14 @@ static void battery_update_proc(Layer *layer, GContext *ctx) {
   graphics_fill_rect(ctx, bounds, 0, GCornerNone);
 
   // Draw the bar
-  graphics_context_set_fill_color(ctx, GColorRed);
+  #if defined(PBL_COLOR)
+    graphics_context_set_fill_color(ctx, GColorRed);
+  #elif defined(PBL_BW)
+    graphics_context_set_fill_color(ctx, GColorClear);
+  #endif
+  
   graphics_fill_rect(ctx, GRect(0, bounds.size.h - height, bounds.size.w, height), 0, GCornerNone);
+  
 }
 
 static void battery_callback(BatteryChargeState state) {
@@ -131,7 +137,13 @@ static void main_window_load(Window *window) {
 
   // improve the layout to be more like a watchface
   text_layer_set_background_color(s_fuzzy_time_layer, GColorClear);
-  text_layer_set_text_color(s_fuzzy_time_layer, GColorRed);
+  
+  #if defined(PBL_COLOR)
+    text_layer_set_text_color(s_fuzzy_time_layer, GColorRed);
+  #elif defined(PBL_BW)
+    text_layer_set_text_color(s_fuzzy_time_layer, GColorClear);
+  #endif
+
   //text_layer_set_font(s_fuzzy_time_layer, s_fuzzy_time_font);
   text_layer_set_font(s_fuzzy_time_layer, fonts_get_system_font(FONT_KEY_BITHAM_30_BLACK));
   text_layer_set_text_alignment(s_fuzzy_time_layer, GTextAlignmentRight);
