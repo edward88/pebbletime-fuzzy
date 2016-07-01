@@ -10,6 +10,8 @@ Inital code contains three variants of "fuzzy" time
 ![screenshot 2](screenshots/_2.png "Sample screenshot 2")
 ![screenshot 3](screenshots/_3.png "Sample screenshot 3")
 
-Currently for personal use only..
+![screenshot 4](screenshots/_4.png "Sample screenshot 4")
+![screenshot 5](screenshots/_5.png "Sample screenshot 5")
+![screenshot 6](screenshots/_6.png "Sample screenshot 6")
 
 Suugestion and contributions for improvement are welcomed :)
