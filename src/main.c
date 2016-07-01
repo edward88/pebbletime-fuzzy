@@ -5,7 +5,8 @@ comment : somewhat fuzzy time pebble watchface
 */
 
 #include <pebble.h>
-#include <stdlib.h>
+
+#include "includes/fuzzy.h"
 
 #define TEXT_LAYER_BORDER 3
 #define BATTERY_LEVEL_LAYER_WIDTH 2
@@ -19,85 +20,8 @@ static GFont s_fuzzy_time_font;
 static int s_battery_level;
 static Layer *s_battery_layer;
 
-static char *hour[] = {"MNIGHT;TWELVE;12",
-                      "ONE;ONE;1",
-                      "TWO;TWO;2",
-                      "THREE;THREE;3",
-                      "FOUR;FOUR;4",
-                      "FIVE;FIVE;5",
-                      "SIX;SIX;6",
-                      "SEVEN;SEVEN;7",
-                      "EIGHT;EIGHT;8",
-                      "NINE;NINE;9",
-                      "TEN;TEN;10",
-                      "ELEVEN;ELEVEN;11",
-                      "NOON;TWELVE;12"};
-                      
-static char *pre_fuzzy[] = {"it's\n;exactly\n;about\n",  //0
-                            "past\n;;around\n",
-                            "ten past\n;;just past\n",
-                            "quarter past\n;;about\n", //15
-                            "quarter past\n;;around\n",
-                            "almost half\n;;just past\n",
-                            "half\n;;about\n", //30
-                            "past half\n;;around\n",
-                            "quarter to\n;;just past\n",
-                            "quarter to\n;;about\n", //45
-                            "ten to\n;;around\n",
-                            "almost\n;;just past\n"};
-                      
-static char *post_fuzzy[] = {"!!!;\no'clock;:00\nor so", //0
-                             ";\nfive;:05\nish",
-                             ";\nten;:10",
-                             ";\nfifteen;:15\nor so", //15
-                             "\nish;\ntwenty;:20\nish",
-                             ";\ntwenty five;:25",
-                             ";\nthirty;:30\nor so", //30
-                             ";\nthirty five;:35\nish",
-                             "\nor so;\nforty;:40",
-                             ";\nforty five;:45\nor so", //45
-                             ";\nfifty;:50\nish",
-                             ";\nfifty five;:55"};
-
-int random_max_limit(int max) {
-
-  if(max < RAND_MAX)
-  {
-    return rand() % (max);
-  }
-  return 0;
-}
-
-char *get_fuzzy(char *fuzzy, int index)
-{
-  static char fuzzy_string[20];
-
-  //clear fuzzy string from any previous values
-  memset(fuzzy_string, 0, sizeof(fuzzy_string));
-  fuzzy_string[0] = '\0';
-
-  int len = strlen(fuzzy);
-  int index_counter = 0;
-  int fuzzy_string_index = 0;
-
-  for (int i = 0; i < len; i++)
-  {
-    if(fuzzy[i] == ';')
-    {
-      index_counter++;
-    }
-    else if(index_counter == index)
-    {
-      fuzzy_string[fuzzy_string_index] = fuzzy[i];
-      fuzzy_string_index++;
-    }
-  }
-
-  return fuzzy_string;
-}
-
 static void battery_update_proc(Layer *layer, GContext *ctx) {
-  
+
   GRect bounds = layer_get_bounds(layer);
 
   // Find the height of the bar
@@ -184,7 +108,7 @@ static void update_time(bool force_update) {
     int hour_12_format = (hour_24_format > 12 ? hour_24_format - 12 : hour_24_format);
     int minute_5_gap = tick_time->tm_min/5;
 
-    int fuzzy_index = random_max_limit(FUZZY_VARIATIONS);
+    int fuzzy_index = get_random(FUZZY_VARIATIONS);
 
     if(fuzzy_index == 0 && minute_5_gap > 7)
     {
@@ -201,16 +125,9 @@ static void update_time(bool force_update) {
         hour_12_format = hour_12_format + 1;
       }
     }
-    
-    // write the fuzzy time string into a buffer
-    static char s_buffer[30];
-
-    strcpy(s_buffer, get_fuzzy(pre_fuzzy[minute_5_gap], fuzzy_index));
-    strcat(s_buffer, get_fuzzy(hour[hour_12_format], fuzzy_index));
-    strcat(s_buffer, get_fuzzy(post_fuzzy[minute_5_gap], fuzzy_index));
 
     // display this time on the textlayer
-    text_layer_set_text(s_fuzzy_time_layer, s_buffer);
+    text_layer_set_text(s_fuzzy_time_layer, get_fuzzy(fuzzy_index, hour_12_format, minute_5_gap));
   }
 }
 
