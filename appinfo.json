@@ -3,7 +3,11 @@
   "shortName": "Fuzzy",
   "longName": "Fuzzy Time",
   "companyName": "AwesomeInRed",
+<<<<<<< HEAD
   "versionLabel": "1.1",
+=======
+  "versionLabel": "1.0",
+>>>>>>> master
   "sdkVersion": "3",
   "targetPlatforms": ["aplite", "basalt"],
   "enableMultiJS": true,
