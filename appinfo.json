@@ -3,7 +3,11 @@
   "shortName": "Fuzzy",
   "longName": "Fuzzy Time",
   "companyName": "AwesomeInRed",
+<<<<<<< HEAD
   "versionLabel": "1.1",
+=======
+  "versionLabel": "0.1",
+>>>>>>> 6fd03ff... change version to 0.x for non published app
   "sdkVersion": "3",
   "targetPlatforms": ["aplite", "basalt"],
   "enableMultiJS": true,
